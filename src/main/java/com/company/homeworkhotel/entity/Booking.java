@@ -1,11 +1,14 @@
 package com.company.homeworkhotel.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.JmixProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @JmixEntity
@@ -43,6 +46,17 @@ public class Booking {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "booking")
     private RoomReservation roomReservation;
+
+    @JmixProperty()
+    @DependsOnProperties({"arrivalDate"})
+    public Integer getCountDownDays() {
+        LocalDate now = LocalDate.now();
+        if(arrivalDate.isAfter(now)) {
+            return ((Long) ChronoUnit.DAYS.between(LocalDate.now(), arrivalDate)).intValue();
+        } else {
+            return 0;
+        }
+    }
 
     public LocalDate getDepartureDate() {
         return departureDate;

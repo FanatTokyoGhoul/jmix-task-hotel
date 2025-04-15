@@ -7,8 +7,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @JmixEntity
@@ -20,14 +28,19 @@ public class Room {
     @Id
     private UUID id;
 
+    @Max(999)
+    @Min(100)
     @InstanceName
     @NotNull
     @Column(name = "NUMBER_", nullable = false)
     private Integer number;
 
+    @Max(9)
+    @Min(1)
     @Column(name = "FLOOR_")
     private Integer floor;
 
+    @Positive
     @Column(name = "SQUARE_METERS")
     private Integer squareMeters;
 
@@ -49,6 +62,50 @@ public class Room {
 
     @Column(name = "AIR_CONDITIONER")
     private Boolean airConditioner;
+    @CreatedBy
+    @Column(name = "CREATED_BY")
+    private String createdBy;
+    @CreatedDate
+    @Column(name = "CREATED_DATE")
+    private OffsetDateTime createdDate;
+    @LastModifiedBy
+    @Column(name = "LAST_MODIFIED_BY")
+    private String lastModifiedBy;
+    @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
+    private OffsetDateTime lastModifiedDate;
+
+    public OffsetDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(OffsetDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public OffsetDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(OffsetDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public Boolean getAirConditioner() {
         return airConditioner;

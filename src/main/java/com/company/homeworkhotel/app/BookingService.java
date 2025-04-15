@@ -3,10 +3,21 @@ package com.company.homeworkhotel.app;
 import com.company.homeworkhotel.entity.Booking;
 import com.company.homeworkhotel.entity.Room;
 import com.company.homeworkhotel.entity.RoomReservation;
+import io.jmix.core.DataManager;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BookingService {
+
+    private final DataManager dataManager;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public BookingService(DataManager dataManager) {
+        this.dataManager = dataManager;
+    }
 
     /**
      * Check if given room is suitable for the booking.
@@ -19,8 +30,14 @@ public class BookingService {
      * @return true if checks are passed successfully
      */
     public boolean isSuitable(Booking booking, Room room) {
-        //todo implement me!
-        return true;
+        Boolean cantGo = entityManager
+                .createQuery("SELECT CASE WHEN count(rr) > 0 THEN true ELSE false END FROM RoomReservation rr " +
+                        "where rr.booking.arrivalDate > :bookingArrivalDate and" +
+                        " rr.booking.departureDate < :bookingArrivalDate",
+                        Boolean.class)
+                .setParameter("bookingArrivalDate", booking.getArrivalDate())
+                .getSingleResult();
+        return booking.getNumberOfGuests() <= room.getSleepingPlaces() && !cantGo;
     }
 
     /**

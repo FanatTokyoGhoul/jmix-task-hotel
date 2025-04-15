@@ -56,6 +56,10 @@
                 <column property="quiet"/>
                 <column property="minibar"/>
                 <column property="airConditioner"/>
+                <column property="createdBy"/>
+                <column property="createdDate"/>
+                <column property="lastModifiedBy"/>
+                <column property="lastModifiedDate"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

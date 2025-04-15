@@ -56,6 +56,7 @@
                 <column property="nightsOfStay"/>
                 <column property="departureDate"/>
                 <column property="status"/>
+                <column property="countDownDays"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

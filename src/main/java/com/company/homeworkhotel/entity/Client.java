@@ -1,12 +1,16 @@
 package com.company.homeworkhotel.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
@@ -27,11 +31,19 @@ public class Client {
     @NotNull
     private String lastName;
 
+    @Email
     @Column(name = "EMAIL")
     private String email;
 
+    @Size(min = 8, max = 16)
     @Column(name = "TELEPHONE")
     private String telephone;
+
+    @InstanceName
+    @DependsOnProperties({"firstName", "lastName"})
+    public String getInstanceName() {
+        return String.join(" ", firstName, lastName);
+    }
 
     public String getTelephone() {
         return telephone;

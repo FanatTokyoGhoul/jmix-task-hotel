@@ -4,6 +4,8 @@ import com.company.homeworkhotel.entity.Client;
 import com.company.homeworkhotel.entity.RoomReservation;
 import com.company.homeworkhotel.view.main.MainView;
 import com.vaadin.flow.router.Route;
+import io.jmix.core.DataManager;
+import io.jmix.core.Id;
 import io.jmix.flowui.Dialogs;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.kit.action.ActionPerformedEvent;
@@ -20,6 +22,8 @@ public class ReservedRoomsList extends StandardListView<RoomReservation> {
     private DataGrid<RoomReservation> roomReservationsDataGrid;
     @Autowired
     private Dialogs dialogs;
+    @Autowired
+    private DataManager dataManager;
 
     @Subscribe("roomReservationsDataGrid.viewClientEmail")
     public void onRoomReservationsDataGridViewClientEmail(final ActionPerformedEvent event) {
@@ -29,9 +33,12 @@ public class ReservedRoomsList extends StandardListView<RoomReservation> {
         }
         Client client = reservation.getBooking().getClient();
 
+        String email = dataManager.load(Id.of(client.getId(), Client.class))
+                .one().getEmail();
+
         dialogs.createMessageDialog()
                 .withHeader("Client email")
-                .withText(client.getEmail())
+                .withText(email)
                 .open();
     }
 }
